@@ -1,38 +1,42 @@
 #include <DFT/NaiveDFT.hpp>
 
-Series NaiveDFT::Forward(const Series &timeSeries) const {
-    auto N = timeSeries.size();
-    auto frequencySeries = Series(N);
+DFT::Status NaiveDFT::Forward(const complex* const timeSeriesIn, complex* const dftOut, const size_t N) const {
+    const bool inputIsNull = timeSeriesIn == nullptr;
+    const bool outputIsNull = dftOut == nullptr;
+    if (inputIsNull || outputIsNull) {
+        return Status::InvalidParameter;
+    }
 
     for (auto k = 0; k < N; k++) {
-        auto sum = Sample(0.0, 0.0);
+        auto sum = complex(0.0, 0.0);
         for (auto n = 0; n < N; n++) {
             double exponential = 2 * PI / N * k * n;
             double real = cos(exponential);
             double imag = -sin(exponential);
-            sum += (timeSeries[n] * Sample(real, imag));
+            sum += (timeSeriesIn[n] * complex(real, imag));
         }
-        frequencySeries[k] = sum;
+        dftOut[k] = sum;
     }
-
-    return frequencySeries;
+    return Status::Success;
 }
 
-Series NaiveDFT::Backward(const Series &frequencySeries) const {
-    auto N = frequencySeries.size();
-    auto timeSeries = Series(N);
+DFT::Status NaiveDFT::Backward(const complex* const dftIn, complex* const timeSeriesOut, const size_t N) const {
+    const bool inputIsNull = dftIn == nullptr;
+    const bool outputIsNull = timeSeriesOut == nullptr;
+    if (inputIsNull || outputIsNull) {
+        return Status::InvalidParameter;
+    }
 
     for (auto n = 0; n < N; n++) {
-        auto s = Sample(0.0, 0.0);
+        auto s = complex(0.0, 0.0);
         for (auto k = 0; k < N; k++) {
             double exponent = ((2 * PI) / N) * k * n;
             double lhs = cos(exponent);
             double rhs = sin(exponent);
-            s += (frequencySeries[k] * Sample(lhs, rhs));
+            s += (dftIn[k] * complex(lhs, rhs));
         }
-        s = s / Sample(N, 0.0);
-        timeSeries[n] = s;
+        s = s / complex(N, 0.0);
+        timeSeriesOut[n] = s;
     }
-
-    return timeSeries;
+    return Status::Success;
 }

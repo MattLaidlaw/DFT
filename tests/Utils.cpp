@@ -4,11 +4,11 @@
 #include <iomanip>
 #include <numeric>
 
-Series CreateCompositeSignal(int numberOfSamples, const SignalList& composingSignals) {
-    Series series(numberOfSamples);
+std::vector<complex> CreateCompositeSignal(int numberOfSamples, const SignalList& composingSignals) {
+    std::vector<complex> series(numberOfSamples);
     auto indices = std::vector<int>(series.size());
     std::iota(indices.begin(), indices.end(), 0);
-    std::transform(indices.begin(), indices.end(), series.begin(), [&](const int& i) -> Sample {
+    std::transform(indices.begin(), indices.end(), series.begin(), [&](const int& i) -> complex {
         double real = 0.0;
         double imag = 0.0;
         for (const auto& [frequency, amplitude] : composingSignals) {
@@ -21,7 +21,7 @@ Series CreateCompositeSignal(int numberOfSamples, const SignalList& composingSig
     return series;
 }
 
-void PrintSeries(const Series& series, std::ostream& os) {
+void PrintSeries(const std::vector<complex>& series, std::ostream& os) {
     os << std::fixed;
     for (const auto& sample : series) {
         os << sample << std::endl;

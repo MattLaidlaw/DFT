@@ -5,10 +5,13 @@
 static void Benchmark_NaiveDFT_Forward(benchmark::State& state) {
     const auto dft = NaiveDFT();
     const auto signal = CreateCompositeSignal(state.range(0), {{1, 1}});
+    auto* out = new complex[state.range(0)];
 
     for (auto _ : state) {
-        const auto frequencySeries = dft.Forward(signal);
+        dft.Forward(signal.data(), out, state.range(0));
     }
+
+    delete[] out;
 
     state.SetBytesProcessed(state.iterations() * state.range(0));
     state.SetComplexityN(state.range(0));
