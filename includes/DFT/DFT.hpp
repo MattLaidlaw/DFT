@@ -4,7 +4,7 @@
 #include <complex>
 #include <vector>
 
-const double M_PI = 3.14159265358979323846;
+const double PI = 3.14159265358979323846;
 
 /** @brief A single complex number. */
 typedef std::complex<double> Sample;

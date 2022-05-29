@@ -10,7 +10,7 @@ Series CreateCompositeSignal(int numberOfSamples, const SignalList& composingSig
         double real = 0.0;
         double imag = 0.0;
         for (const auto& [frequency, amplitude] : composingSignals) {
-            double radians = frequency * i * 2 * M_PI / numberOfSamples;
+            double radians = frequency * i * 2 * PI / numberOfSamples;
             real += amplitude * cos(radians);
             imag += amplitude * sin(radians);
         }
