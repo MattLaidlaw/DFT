@@ -34,6 +34,21 @@ TEST(NaiveDFT, Zeros) {
     const auto dft = NaiveDFT();
 
     const int numberOfSamples = 8;
+    const int frequency = 0.0;
+    const int amplitude = 0.0;
+
+    const auto signal = CreateCompositeSignal(numberOfSamples, {{frequency, amplitude}});
+    const auto frequencySeries = dft.Forward(signal);
+    for (auto i = 0; i < signal.size(); i++) {
+        EXPECT_NEAR(frequencySeries[i].real(), 0.0, 0.0001);
+        EXPECT_NEAR(frequencySeries[i].imag(), 0.0, 0.0001);
+    }
+}
+
+TEST(NaiveDFT, SimpleSignal) {
+    const auto dft = NaiveDFT();
+
+    const int numberOfSamples = 8;
     const int frequency = 1.0;
     const int amplitude = 1.0;
 
