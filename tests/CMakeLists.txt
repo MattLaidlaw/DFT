@@ -1,3 +1,5 @@
+include(GoogleTest)
+
 add_executable(
     TestDFT
         TestNaiveDFT.cpp
@@ -9,6 +11,8 @@ target_link_libraries(
         dft
         GTest::gtest_main
 )
+
+gtest_discover_tests(TestDFT)
 
 add_executable(
     BenchmarkDFT
