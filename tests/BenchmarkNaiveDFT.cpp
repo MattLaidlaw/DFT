@@ -14,4 +14,4 @@ static void Benchmark_NaiveDFT_Forward(benchmark::State& state) {
     state.SetComplexityN(state.range(0));
 }
 
-BENCHMARK(Benchmark_NaiveDFT_Forward)->Range(8, 8<<10)->Complexity();
+BENCHMARK(Benchmark_NaiveDFT_Forward)->RangeMultiplier(2)->Range(1024, 32768)->Complexity();
