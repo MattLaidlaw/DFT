@@ -37,12 +37,18 @@ TEST(NaiveDFT, Zeros) {
     const int frequency = 0.0;
     const int amplitude = 0.0;
 
-    const auto signal = CreateCompositeSignal(numberOfSamples, {{frequency, amplitude}});
-    const auto frequencySeries = dft.Forward(signal);
-    for (auto i = 0; i < signal.size(); i++) {
-        EXPECT_NEAR(frequencySeries[i].real(), 0.0, 0.0001);
-        EXPECT_NEAR(frequencySeries[i].imag(), 0.0, 0.0001);
+    const auto in = CreateCompositeSignal(numberOfSamples, {{frequency, amplitude}});
+    auto* out = new complex[numberOfSamples];
+
+    auto result = dft.Forward(in.data(), out, numberOfSamples);
+    EXPECT_EQ(result, DFT::Status::Success);
+
+    for (auto i = 0; i < numberOfSamples; i++) {
+        EXPECT_NEAR(out[i].real(), 0.0, 0.0001);
+        EXPECT_NEAR(out[i].imag(), 0.0, 0.0001);
     }
+
+    delete[] out;
 }
 
 TEST(NaiveDFT, SimpleSignal) {
