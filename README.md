@@ -1,7 +1,5 @@
 # DFT
 
----
-
 ## Description
 This project implements a variety of Discrete Fourier Transform algorithms.
 These algorithms are tested for accuracy and benchmarked to identify throughput and computational complexity.
