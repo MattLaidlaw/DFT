@@ -2,11 +2,13 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <numeric>
 
 Series CreateCompositeSignal(int numberOfSamples, const SignalList& composingSignals) {
     Series series(numberOfSamples);
-    std::transform(series.begin(), series.end(), series.begin(),
-                   [&, i = 0](const Sample& sample) mutable -> Sample {
+    auto indices = std::vector<int>(series.size());
+    std::iota(indices.begin(), indices.end(), 0);
+    std::transform(indices.begin(), indices.end(), series.begin(), [&](const int& i) -> Sample {
         double real = 0.0;
         double imag = 0.0;
         for (const auto& [frequency, amplitude] : composingSignals) {
@@ -14,7 +16,6 @@ Series CreateCompositeSignal(int numberOfSamples, const SignalList& composingSig
             real += amplitude * cos(radians);
             imag += amplitude * sin(radians);
         }
-        i++;
         return {real, imag};
     });
     return series;
