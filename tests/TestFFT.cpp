@@ -2,6 +2,34 @@
 #include <DFT/FFT.hpp>
 #include "Utils.hpp"
 
+TEST(FFT, Smoke) {
+    const auto dft = FFT();
+
+    const int numberOfSamples = 8;
+    const int frequency = 1.0;
+    const int amplitude = 1.0;
+
+    const auto in = CreateCompositeSignal(numberOfSamples, {{frequency, amplitude}});
+    auto* out = new complex[numberOfSamples];
+
+    auto result = dft.Forward(in.data(), out, numberOfSamples);
+    EXPECT_EQ(result, DFT::Status::Success);
+
+    PrintSeries(in.data(), numberOfSamples);
+    PrintSeries(out, numberOfSamples);
+
+    for (auto i = 0; i < numberOfSamples; i++) {
+        if (i == frequency) {
+            EXPECT_NEAR(out[i].real(), double(numberOfSamples), 0.0001);
+        } else {
+            EXPECT_NEAR(out[i].real(), 0.0, 0.0001);
+        }
+        EXPECT_NEAR(out[i].imag(), 0.0, 0.0001);
+    }
+
+    delete[] out;
+}
+
 TEST(FFT, NullInputInvalidParameter) {
     const size_t numberOfSamples = 8;
 
@@ -87,6 +115,8 @@ TEST(FFT, CompositeSignal) {
 
     auto result = dft.Forward(in.data(), out, numberOfSamples);
     EXPECT_EQ(result, DFT::Status::Success);
+
+    PrintSeries(out, numberOfSamples);
 
     for (auto i = 0; i < numberOfSamples; i++) {
         if (i == 1) {
