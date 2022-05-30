@@ -21,7 +21,8 @@ std::vector<complex> CreateCompositeSignal(int numberOfSamples, const SignalList
 
 /** @brief Prints each sample from a series.
  *  @param series The series to print.
+ *  @param N The number of samples in the series.
  *  @param os The output stream to write to, defaults to stdout. */
-void PrintSeries(const std::vector<complex>& series, std::ostream& os = std::cout);
+void PrintSeries(const complex* const series, const size_t N, std::ostream& os = std::cout);
 
 #endif //DFT_UTILS_HPP
