@@ -4,10 +4,9 @@
 
 void _Forward(const complex* const in, complex* const out, const size_t N) {
     if (N == 1) {
-        out[0] = in[0] * complex(1.0, 0.0);
+        out[0] = in[0];
     } else {
         complex* X = new complex[N];
-        std::copy(out, out + N, X);
         for (auto i = 0; i < (N / 2); i++) {
             X[i] = in[2 * i];
             X[i + (N / 2)] = in[2 * i + 1];
@@ -33,25 +32,29 @@ void _Forward(const complex* const in, complex* const out, const size_t N) {
 
 void _Backward(const complex* const in, complex* const out, const size_t N, const int D) {
     if (N == 1) {
-        out[0] = in[0] * complex(1.0, 0.0) / complex(D, 0.0);
+        out[0] = in[0] / complex(D, 0.0);
     } else {
+        complex* X = new complex[N];
         for (auto i = 0; i < (N / 2); i++) {
-            out[i] = in[2 * i];
-            out[i + (N / 2)] = in[2 * i + 1];
+            X[i] = in[2 * i];
+            X[i + (N / 2)] = in[2 * i + 1];
         }
 
-        _Backward(out, out, N / 2, D);
-        _Backward(out + (N / 2), out + (N / 2), N / 2, D);
+        _Backward(X, X, N / 2, D);
+        _Backward(X + (N / 2), X + (N / 2), N / 2, D);
 
         for (auto k = 0; k < (N / 2); k++) {
-            auto p = out[k];
+            auto p = X[k];
             double exponential = 2 * PI / N * k;
             double real = cos(exponential);
             double imag = sin(exponential);
-            auto q = complex(real, imag) * out[k + (N / 2)];
-            out[k] = p + q;
-            out[k + (N / 2)] = p - q;
+            auto q = complex(real, imag) * X[k + (N / 2)];
+            X[k] = p + q;
+            X[k + (N / 2)] = p - q;
         }
+
+        std::copy(X, X + N, out);
+        delete[] X;
     }
 }
 
