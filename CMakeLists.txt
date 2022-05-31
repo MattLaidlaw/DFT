@@ -3,6 +3,10 @@ project(DFT)
 
 set(CMAKE_CXX_STANDARD 20)
 
+if (DFT_ENABLE_ASAN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+endif()
+
 add_subdirectory(extern)
 add_subdirectory(sources)
 
