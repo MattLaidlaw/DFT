@@ -2,6 +2,7 @@ include(GoogleTest)
 
 add_executable(
     TestDFT
+        TestFFT.cpp
         TestNaiveDFT.cpp
         Utils.cpp
 )
@@ -16,6 +17,7 @@ gtest_discover_tests(TestDFT)
 
 add_executable(
     BenchmarkDFT
+        BenchmarkFFT.cpp
         BenchmarkNaiveDFT.cpp
         Utils.cpp
 )

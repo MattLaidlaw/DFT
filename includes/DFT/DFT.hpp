@@ -2,7 +2,6 @@
 #define DFT_DFT_HPP
 
 #include <complex>
-#include <vector>
 
 const double PI = 3.14159265358979323846;
 
