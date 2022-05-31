@@ -154,4 +154,5 @@ TEST(FFT, InverseTransform) {
     }
 
     delete[] out;
+    delete[] actual;
 }
