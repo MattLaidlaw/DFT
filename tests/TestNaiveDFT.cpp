@@ -3,31 +3,58 @@
 #include "Utils.hpp"
 
 TEST(NaiveDFT, NullInputInvalidParameter) {
+    const auto dft = NaiveDFT();
+
     const size_t numberOfSamples = 8;
 
     const complex* in = nullptr;
     auto* out = new complex[numberOfSamples];
 
-    const auto dft = NaiveDFT();
     auto result = dft.Forward(in, out, numberOfSamples);
-
     EXPECT_EQ(result, DFT::Status::InvalidParameter);
 
     delete[] out;
 }
 
 TEST(NaiveDFT, NullOutputInvalidParameter) {
+    const auto dft = NaiveDFT();
+
     const size_t numberOfSamples = 8;
 
     const auto* in = new complex[numberOfSamples];
     complex* out = nullptr;
 
-    const auto dft = NaiveDFT();
     auto result = dft.Forward(in, out, numberOfSamples);
-
     EXPECT_EQ(result, DFT::Status::InvalidParameter);
 
     delete[] in;
+}
+
+TEST(NaiveDFT, SmokeTest) {
+    const auto dft = NaiveDFT();
+
+    const int numberOfSamples = 4;
+
+    const auto* in = new complex[numberOfSamples] {{1, 0}, {2, -1}, {0, -1}, {-1, 2}};
+    auto* out = new complex[numberOfSamples];
+
+    auto result = dft.Forward(in, out, numberOfSamples);
+    EXPECT_EQ(result, DFT::Status::Success);
+
+    EXPECT_NEAR(out[0].real(), 2.0, 0.0001);
+    EXPECT_NEAR(out[0].imag(), 0.0, 0.0001);
+
+    EXPECT_NEAR(out[1].real(), -2.0, 0.0001);
+    EXPECT_NEAR(out[1].imag(), -2.0, 0.0001);
+
+    EXPECT_NEAR(out[2].real(), 0.0, 0.0001);
+    EXPECT_NEAR(out[2].imag(), -2.0, 0.0001);
+
+    EXPECT_NEAR(out[3].real(), 4.0, 0.0001);
+    EXPECT_NEAR(out[3].imag(), 4.0, 0.0001);
+
+    delete[] in;
+    delete[] out;
 }
 
 TEST(NaiveDFT, Zeros) {
@@ -79,7 +106,7 @@ TEST(NaiveDFT, SimpleSignal) {
 TEST(NaiveDFT, CompositeSignal) {
     const auto dft = NaiveDFT();
 
-    const int numberOfSamples = 8;
+    const int numberOfSamples = 32;
     const auto signals = SignalList{{1, 5}, {3, 3}, {5, 1}};
 
     const auto in = CreateCompositeSignal(numberOfSamples, signals);
