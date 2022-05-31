@@ -106,4 +106,5 @@ TEST(NaiveDFT, InverseTransform) {
     }
 
     delete[] out;
+    delete[] actual;
 }
