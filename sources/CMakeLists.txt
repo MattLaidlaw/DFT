@@ -1,6 +1,7 @@
 set(target_name dft)
 
 add_library(${target_name}
+    FFT.cpp
     NaiveDFT.cpp
 )
 

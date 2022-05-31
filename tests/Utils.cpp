@@ -5,9 +5,10 @@
 #include <numeric>
 
 std::vector<complex> CreateCompositeSignal(int numberOfSamples, const SignalList& composingSignals) {
-    std::vector<complex> series(numberOfSamples);
-    auto indices = std::vector<int>(series.size());
+    auto series = std::vector<complex>(numberOfSamples);
+    auto indices = std::vector<int>(numberOfSamples);
     std::iota(indices.begin(), indices.end(), 0);
+
     std::transform(indices.begin(), indices.end(), series.begin(), [&](const int& i) -> complex {
         double real = 0.0;
         double imag = 0.0;
@@ -18,13 +19,14 @@ std::vector<complex> CreateCompositeSignal(int numberOfSamples, const SignalList
         }
         return {real, imag};
     });
+
     return series;
 }
 
-void PrintSeries(const std::vector<complex>& series, std::ostream& os) {
+void PrintSeries(const complex* const series, const size_t N, std::ostream& os) {
     os << std::fixed;
-    for (const auto& sample : series) {
-        os << sample << std::endl;
+    for (auto i = 0; i < N; i++) {
+        os << series[i] << std::endl;
     }
     os << std::endl;
 }

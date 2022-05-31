@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <DFT/NaiveDFT.hpp>
+#include <DFT/FFT.hpp>
 #include "Utils.hpp"
 
-TEST(NaiveDFT, NullInputInvalidParameter) {
-    const auto dft = NaiveDFT();
+TEST(FFT, NullInputInvalidParameter) {
+    const auto dft = FFT();
 
     const size_t numberOfSamples = 8;
 
@@ -16,8 +16,8 @@ TEST(NaiveDFT, NullInputInvalidParameter) {
     delete[] out;
 }
 
-TEST(NaiveDFT, NullOutputInvalidParameter) {
-    const auto dft = NaiveDFT();
+TEST(FFT, NullOutputInvalidParameter) {
+    const auto dft = FFT();
 
     const size_t numberOfSamples = 8;
 
@@ -30,8 +30,8 @@ TEST(NaiveDFT, NullOutputInvalidParameter) {
     delete[] in;
 }
 
-TEST(NaiveDFT, SmokeTest) {
-    const auto dft = NaiveDFT();
+TEST(FFT, SmokeTest) {
+    const auto dft = FFT();
 
     const int numberOfSamples = 4;
 
@@ -57,8 +57,8 @@ TEST(NaiveDFT, SmokeTest) {
     delete[] out;
 }
 
-TEST(NaiveDFT, Zeros) {
-    const auto dft = NaiveDFT();
+TEST(FFT, Zeros) {
+    const auto dft = FFT();
 
     const int numberOfSamples = 8;
     const int frequency = 0.0;
@@ -78,8 +78,8 @@ TEST(NaiveDFT, Zeros) {
     delete[] out;
 }
 
-TEST(NaiveDFT, SimpleSignal) {
-    const auto dft = NaiveDFT();
+TEST(FFT, SimpleSignal) {
+    const auto dft = FFT();
 
     const int numberOfSamples = 8;
     const int frequency = 1.0;
@@ -103,8 +103,8 @@ TEST(NaiveDFT, SimpleSignal) {
     delete[] out;
 }
 
-TEST(NaiveDFT, CompositeSignal) {
-    const auto dft = NaiveDFT();
+TEST(FFT, CompositeSignal) {
+    const auto dft = FFT();
 
     const int numberOfSamples = 32;
     const auto signals = SignalList{{1, 5}, {3, 3}, {5, 1}};
@@ -131,8 +131,8 @@ TEST(NaiveDFT, CompositeSignal) {
     delete[] out;
 }
 
-TEST(NaiveDFT, InverseTransform) {
-    const auto dft = NaiveDFT();
+TEST(FFT, InverseTransform) {
+    const auto dft = FFT();
 
     const int numberOfSamples = 8;
     const int frequency = 1.0;
@@ -154,5 +154,4 @@ TEST(NaiveDFT, InverseTransform) {
     }
 
     delete[] out;
-    delete[] actual;
 }
